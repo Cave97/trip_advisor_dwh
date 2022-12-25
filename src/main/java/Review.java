@@ -44,6 +44,7 @@ public class Review {
         this.service = service;
         this.food = food;
         if(date.contains(",")){
+            date = date.substring(9);
             SimpleDateFormat tripDate = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
             Date rDate = tripDate.parse(date);
             SimpleDateFormat fileDate = new SimpleDateFormat("dd-MM-yyyy");

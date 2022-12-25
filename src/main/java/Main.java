@@ -228,8 +228,7 @@ public class Main {
 
                                     //System.out.println(evaluation);
                                     wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ratingDate"))));
-                                    String tempDate = reviews.get(i).findElement(By.className("ratingDate")).getText();
-                                    date = tempDate.substring(9);
+                                    date = reviews.get(i).findElement(By.className("ratingDate")).getText();
                                     //System.out.println(date);
 
                                     wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("partial_entry"))));
