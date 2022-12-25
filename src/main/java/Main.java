@@ -66,7 +66,7 @@ public class Main {
 
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@placeholder='Where to?']")));
         driver.findElement(By.xpath("//input[@placeholder='Where to?']")).sendKeys("Le 147");
-        Thread.sleep(4000);
+        Thread.sleep(3000);
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']")));
         List<WebElement> temp=driver.findElements(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']"));
         temp.get(0).click();
@@ -119,17 +119,17 @@ public class Main {
 
                     Thread.sleep(1000);
                     wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")));
-                    //driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys(restName + " " + restCity);
+                    driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys(restName + " " + restCity);
 
-                    driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys("Ma'Kaura, Santa Croce Camerina, Sicily");
+                    //driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys("Ma'Kaura, Santa Croce Camerina, Sicily");
 
 
-                    Thread.sleep(4000);
+                    Thread.sleep(3000);
 
                     wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']")));
                     List<WebElement> results;
                     results = driver.findElements(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']"));
-                    if(results.get(0).findElement(By.xpath("//div[@class='biGQs _P fiohW fOtGX']")).getText().contains("Ma")){//restName)){
+                    if(results.get(0).findElement(By.xpath("//div[@class='biGQs _P fiohW fOtGX']")).getText().contains(restName)){
                         System.out.println("Analyzing " + restName + " in " + restCity + " with code " + restCode);
                         results.get(0).click();
                         Thread.sleep(3000);
@@ -150,7 +150,6 @@ public class Main {
                             do {
                                 count++;
                                 Thread.sleep(3000);
-
 
                                 String xpathReview = "(//div[@class='ui_column is-9'])";
                                 if(existsElement(xpathReview + "[1]//span[text()='More']")){
