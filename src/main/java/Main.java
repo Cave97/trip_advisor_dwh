@@ -1,9 +1,6 @@
 package main.java;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import com.opencsv.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -50,7 +47,7 @@ public class Main {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1080");
         //options.addArguments("--disable-blink-features=AutomationControlled");
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.addArguments("disable-infobars");
         options.addArguments("--disable-extensions");
         driver = new ChromeDriver(options);
@@ -83,8 +80,21 @@ public class Main {
         CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
         try (CSVReader reader = new CSVReaderBuilder(new FileReader(csvRead)).withCSVParser(csvParser).build()) {
             //Skip header
-            if(!index.exists())
+            if(!index.exists()){
                 reader.readNext();
+                File csvWrite;
+                if(OS.contains("windows"))
+                    csvWrite = new File(".\\output\\output.csv");
+                else
+                    csvWrite = new File("./output/output.csv");
+
+                FileWriter fileWriter = new FileWriter(csvWrite, true);
+                CSVWriter writer = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_ESCAPE_CHARACTER);
+                String[] data = new String[] {"restCode", "date", "evaluation", "memberSince", "userInfo", "userLevel", "contributions", "citiesVisited", "helpfulVotes", "photos", "atmosphere", "service", "food", "text"};
+                writer.writeNext(data);
+                writer.close();
+            }
+
             do{
                 restaurants++;
                 if ((line = reader.readNext()) != null) {
@@ -109,8 +119,9 @@ public class Main {
 
                     Thread.sleep(1000);
                     wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")));
-                    driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys(restName + " " + restCity);
+                    //driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys(restName + " " + restCity);
 
+                    driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0']")).sendKeys("Ma'Kaura, Santa Croce Camerina, Sicily");
 
 
                     Thread.sleep(4000);
@@ -118,13 +129,11 @@ public class Main {
                     wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']")));
                     List<WebElement> results;
                     results = driver.findElements(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']"));
-                    if(results.get(0).findElement(By.xpath("//div[@class='biGQs _P fiohW fOtGX']")).getText().contains(restName)){
+                    if(results.get(0).findElement(By.xpath("//div[@class='biGQs _P fiohW fOtGX']")).getText().contains("Ma")){//restName)){
                         System.out.println("Analyzing " + restName + " in " + restCity + " with code " + restCode);
                         results.get(0).click();
-
-                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='AfQtZ']")));
-                        String reviewCount = driver.findElement(By.xpath("//span[@class='AfQtZ']")).getText().split(" ")[0];
-                        if(!reviewCount.equals("0")){
+                        Thread.sleep(3000);
+                        if(existsElement("//div[@data-tracker='All languages']")){
                             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-tracker='All languages']")));
                             driver.findElement(By.xpath("//div[@data-tracker='All languages']")).click();
 

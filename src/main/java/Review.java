@@ -52,8 +52,9 @@ public class Review {
             this.date = date;
         this.evaluation = evaluation;
         String escapedData = text.replaceAll("\n", " ");
-        byte[] bytes = escapedData.getBytes(StandardCharsets.UTF_8);
-        this.text = new String(bytes, StandardCharsets.UTF_8);
+        escapedData = escapedData.replaceAll(";", " ");
+        //byte[] bytes = escapedData.getBytes(StandardCharsets.UTF_8);
+        this.text = escapedData;//new String(bytes, StandardCharsets.UTF_8);
     }
 
 
