@@ -217,11 +217,12 @@ public class Main {
                                                 else if (tempS.contains("Photo"))
                                                     photos = tempS.substring(0, tempS.indexOf(" "));
                                             }
-                                            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
-                                            driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
                                         }catch (Exception e) {
                                             System.out.println("It has not been possible to get user data");
                                         }
+
+                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
+                                        driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
                                     } catch (TimeoutException e) {
                                         System.out.println("memberOverlayRedesign g10n not opened. Skipping related data retrieval.");
                                     }
