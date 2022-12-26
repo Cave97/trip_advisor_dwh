@@ -217,11 +217,11 @@ public class Main {
                                                 photos = tempS.substring(0, tempS.indexOf(" "));
                                         }
 
-                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
-                                        driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
                                     } catch (TimeoutException e) {
                                         System.out.println("memberOverlayRedesign g10n not opened. Skipping related data retrieval.");
                                     }
+                                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
+                                    driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
 
                                     wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ui_bubble_rating"))));
                                     WebElement ev = reviews.get(i).findElement(By.className("ui_bubble_rating"));
