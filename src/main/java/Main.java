@@ -173,7 +173,7 @@ public class Main {
 
                                 for (int i = 0; i < users.size(); i++) {
                                     String memberSince = "";
-                                    String userInfo;
+                                    String userInfo = "";
                                     String evaluation = "";
                                     String date;
                                     String userLevel = "";
@@ -188,39 +188,40 @@ public class Main {
 
                                     users.get(i).click();
 
-                                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='memberOverlayRedesign g10n']")));
+                                    try {
+                                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='memberOverlayRedesign g10n']")));
 
-                                    if(existsElement("//div[@class='badgeinfo']"))
-                                        userLevel = driver.findElement(By.xpath("//div[@class='badgeinfo']/span")).getText();
+                                        if(existsElement("//div[@class='badgeinfo']"))
+                                            userLevel = driver.findElement(By.xpath("//div[@class='badgeinfo']/span")).getText();
 
-                                    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li")));
-                                    List<WebElement> userElements = driver.findElements(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li"));
+                                        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li")));
+                                        List<WebElement> userElements = driver.findElements(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li"));
+                                        memberSince = userElements.get(0).getText().split(" ")[3];
 
-                                    memberSince = userElements.get(0).getText().split(" ")[3];
+                                        if(userElements.size() == 1)
+                                            userInfo = "";
+                                        else
+                                            userInfo = userElements.get(1).getText();
 
-                                    if(userElements.size() == 1)
-                                        userInfo = "";
-                                    else
-                                        userInfo = userElements.get(1).getText();
+                                        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='countsReviewEnhancements']/li")));
+                                        List<WebElement> userCounters = driver.findElements(By.xpath("//ul[@class='countsReviewEnhancements']/li"));
+                                        for (WebElement userCounter : userCounters) {
+                                            String tempS = userCounter.getText();
+                                            if (tempS.contains("Contribution"))
+                                                contributions = tempS.substring(0, tempS.indexOf(" "));
+                                            else if (tempS.contains("visited"))
+                                                citiesVisited = tempS.substring(0, tempS.indexOf(" "));
+                                            else if (tempS.contains("Helpful"))
+                                                helpfulVotes = tempS.substring(0, tempS.indexOf(" "));
+                                            else if (tempS.contains("Photo"))
+                                                photos = tempS.substring(0, tempS.indexOf(" "));
+                                        }
 
-                                    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='countsReviewEnhancements']/li")));
-                                    List<WebElement> userCounters = driver.findElements(By.xpath("//ul[@class='countsReviewEnhancements']/li"));
-                                    for (WebElement userCounter : userCounters) {
-                                        String tempS = userCounter.getText();
-                                        if (tempS.contains("Contribution"))
-                                            contributions = tempS.substring(0, tempS.indexOf(" "));
-                                        else if (tempS.contains("visited"))
-                                            citiesVisited = tempS.substring(0, tempS.indexOf(" "));
-                                        else if (tempS.contains("Helpful"))
-                                            helpfulVotes = tempS.substring(0, tempS.indexOf(" "));
-                                        else if (tempS.contains("Photo"))
-                                            photos = tempS.substring(0, tempS.indexOf(" "));
+                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
+                                        driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
+                                    } catch (TimeoutException e) {
+                                        System.out.println("memberOverlayRedesign g10n not opened. Skipping related data retrieval.");
                                     }
-
-                                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
-                                    driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
-
-
 
                                     wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ui_bubble_rating"))));
                                     WebElement ev = reviews.get(i).findElement(By.className("ui_bubble_rating"));
