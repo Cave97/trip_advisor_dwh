@@ -47,7 +47,7 @@ public class Main {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1920,1080");
         //options.addArguments("--disable-blink-features=AutomationControlled");
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("disable-infobars");
         options.addArguments("--disable-extensions");
         driver = new ChromeDriver(options);
@@ -155,12 +155,12 @@ public class Main {
                                 if(existsElement(xpathReview + "[1]//span[text()='More']")){
                                     wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathReview + "[1]//span[text()='More']")));
                                     driver.findElement(By.xpath(xpathReview + "[1]//span[text()='More']")).click();
-                                    Thread.sleep(3000);
+                                    Thread.sleep(4000);
                                 }
                                 else if(existsElement(xpathReview + "[2]//span[text()='More']")){
                                     wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathReview + "[2]//span[text()='More']")));
                                     driver.findElement(By.xpath(xpathReview + "[2]//span[text()='More']")).click();
-                                    Thread.sleep(3000);
+                                    Thread.sleep(4000);
                                 }
 
                                 wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='member_info']")));
