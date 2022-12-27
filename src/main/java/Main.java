@@ -56,20 +56,7 @@ public class Main {
         // wait
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        driver.get("https://www.tripadvisor.com/");
-
-        System.out.println("Starting execution...");
-
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("onetrust-accept-btn-handler")));
-        driver.findElement(By.id("onetrust-accept-btn-handler")).click();
-
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@placeholder='Where to?']")));
-        driver.findElement(By.xpath("//input[@placeholder='Where to?']")).sendKeys("Le 147");
-        Thread.sleep(3000);
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']")));
-        List<WebElement> temp=driver.findElements(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']"));
-        temp.get(0).click();
+        prepareForExecution(driver, wait, true);
 
         String[] line;
         int restaurants = 0;
@@ -133,134 +120,134 @@ public class Main {
                         System.out.println("Analyzing " + restName + " in " + restCity + " with code " + restCode);
                         results.get(0).click();
                         Thread.sleep(3000);
-                        if(existsElement("//div[@data-tracker='All languages']")){
-                            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-tracker='All languages']")));
-                            driver.findElement(By.xpath("//div[@data-tracker='All languages']")).click();
+                        if (driver.getCurrentUrl().contains("Restaurant_Review")) {
+                            if (existsElement("//div[@data-tracker='All languages']")) {
+                                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-tracker='All languages']")));
+                                driver.findElement(By.xpath("//div[@data-tracker='All languages']")).click();
 
-                            Thread.sleep(3000);
-                            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//select[@id='sort-by']")));
-                            driver.findElement(By.xpath("//select[@id='sort-by']")).click();
-
-                            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//option[@value='ml_sorted']")));
-                            driver.findElement(By.xpath("//option[@value='ml_sorted']")).click();
-
-                            boolean stop = false;
-                            int count = 0;
-                            List<String[]> reviewsList = new ArrayList<>();
-                            do {
-                                count++;
                                 Thread.sleep(3000);
+                                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//select[@id='sort-by']")));
+                                driver.findElement(By.xpath("//select[@id='sort-by']")).click();
 
-                                String xpathReview = "(//div[@class='ui_column is-9'])";
-                                if(existsElement(xpathReview + "[1]//span[text()='More']")){
-                                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathReview + "[1]//span[text()='More']")));
-                                    driver.findElement(By.xpath(xpathReview + "[1]//span[text()='More']")).click();
-                                    Thread.sleep(4000);
-                                }
-                                else if(existsElement(xpathReview + "[2]//span[text()='More']")){
-                                    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathReview + "[2]//span[text()='More']")));
-                                    driver.findElement(By.xpath(xpathReview + "[2]//span[text()='More']")).click();
-                                    Thread.sleep(4000);
-                                }
+                                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//option[@value='ml_sorted']")));
+                                driver.findElement(By.xpath("//option[@value='ml_sorted']")).click();
 
-                                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='member_info']")));
-                                List<WebElement> users = driver.findElements(By.xpath("//div[@class='member_info']"));
-                                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='ui_column is-9']")));
-                                List<WebElement> reviews = driver.findElements(By.xpath("//div[@class='ui_column is-9']"));
+                                boolean stop = false;
+                                int count = 0;
+                                List<String[]> reviewsList = new ArrayList<>();
+                                do {
+                                    count++;
+                                    Thread.sleep(3000);
 
-                                //System.out.println(reviews.size());
-
-
-                                for (int i = 0; i < users.size(); i++) {
-                                    String memberSince = "";
-                                    String userInfo = "";
-                                    String evaluation = "";
-                                    String date;
-                                    String userLevel = "";
-                                    String contributions = "";
-                                    String citiesVisited = "";
-                                    String helpfulVotes = "";
-                                    String photos = "";
-                                    String atmosphere = "";
-                                    String service = "";
-                                    String food = "";
-                                    String text="";
-
-                                    try {
-                                        users.get(i).click();
-                                    } catch (ElementClickInterceptedException e) {
-                                        System.out.println(e.getMessage());
-                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
-                                        driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
-                                        Thread.sleep(500);
-                                        users.get(i).click();
+                                    String xpathReview = "(//div[@class='ui_column is-9'])";
+                                    if (existsElement(xpathReview + "[1]//span[text()='More']")) {
+                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathReview + "[1]//span[text()='More']")));
+                                        driver.findElement(By.xpath(xpathReview + "[1]//span[text()='More']")).click();
+                                        Thread.sleep(4000);
+                                    } else if (existsElement(xpathReview + "[2]//span[text()='More']")) {
+                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathReview + "[2]//span[text()='More']")));
+                                        driver.findElement(By.xpath(xpathReview + "[2]//span[text()='More']")).click();
+                                        Thread.sleep(4000);
                                     }
 
-                                    try {
-                                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='memberOverlayRedesign g10n']")));
+                                    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='member_info']")));
+                                    List<WebElement> users = driver.findElements(By.xpath("//div[@class='member_info']"));
+                                    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='ui_column is-9']")));
+                                    List<WebElement> reviews = driver.findElements(By.xpath("//div[@class='ui_column is-9']"));
 
-                                        try{
-                                            if(existsElement("//div[@class='badgeinfo']"))
-                                                userLevel = driver.findElement(By.xpath("//div[@class='badgeinfo']/span")).getText();
+                                    //System.out.println(reviews.size());
 
-                                            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li")));
-                                            List<WebElement> userElements = driver.findElements(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li"));
-                                            memberSince = userElements.get(0).getText().split(" ")[3];
 
-                                            if(userElements.size() == 1)
-                                                userInfo = "";
-                                            else
-                                                userInfo = userElements.get(1).getText();
+                                    for (int i = 0; i < users.size(); i++) {
+                                        String memberSince = "";
+                                        String userInfo = "";
+                                        String evaluation = "";
+                                        String date;
+                                        String userLevel = "";
+                                        String contributions = "";
+                                        String citiesVisited = "";
+                                        String helpfulVotes = "";
+                                        String photos = "";
+                                        String atmosphere = "";
+                                        String service = "";
+                                        String food = "";
+                                        String text = "";
 
-                                            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='countsReviewEnhancements']/li")));
-                                            List<WebElement> userCounters = driver.findElements(By.xpath("//ul[@class='countsReviewEnhancements']/li"));
-                                            for (WebElement userCounter : userCounters) {
-                                                String tempS = userCounter.getText();
-                                                if (tempS.contains("Contribution"))
-                                                    contributions = tempS.substring(0, tempS.indexOf(" "));
-                                                else if (tempS.contains("visited"))
-                                                    citiesVisited = tempS.substring(0, tempS.indexOf(" "));
-                                                else if (tempS.contains("Helpful"))
-                                                    helpfulVotes = tempS.substring(0, tempS.indexOf(" "));
-                                                else if (tempS.contains("Photo"))
-                                                    photos = tempS.substring(0, tempS.indexOf(" "));
+                                        try {
+                                            users.get(i).click();
+                                        } catch (ElementClickInterceptedException e) {
+                                            System.out.println(e.getMessage());
+                                            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
+                                            driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
+                                            Thread.sleep(500);
+                                            users.get(i).click();
+                                        }
+
+                                        try {
+                                            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='memberOverlayRedesign g10n']")));
+
+                                            try {
+                                                if (existsElement("//div[@class='badgeinfo']"))
+                                                    userLevel = driver.findElement(By.xpath("//div[@class='badgeinfo']/span")).getText();
+
+                                                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li")));
+                                                List<WebElement> userElements = driver.findElements(By.xpath("//ul[@class='memberdescriptionReviewEnhancements']/li"));
+                                                memberSince = userElements.get(0).getText().split(" ")[3];
+
+                                                if (userElements.size() == 1)
+                                                    userInfo = "";
+                                                else
+                                                    userInfo = userElements.get(1).getText();
+
+                                                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//ul[@class='countsReviewEnhancements']/li")));
+                                                List<WebElement> userCounters = driver.findElements(By.xpath("//ul[@class='countsReviewEnhancements']/li"));
+                                                for (WebElement userCounter : userCounters) {
+                                                    String tempS = userCounter.getText();
+                                                    if (tempS.contains("Contribution"))
+                                                        contributions = tempS.substring(0, tempS.indexOf(" "));
+                                                    else if (tempS.contains("visited"))
+                                                        citiesVisited = tempS.substring(0, tempS.indexOf(" "));
+                                                    else if (tempS.contains("Helpful"))
+                                                        helpfulVotes = tempS.substring(0, tempS.indexOf(" "));
+                                                    else if (tempS.contains("Photo"))
+                                                        photos = tempS.substring(0, tempS.indexOf(" "));
+                                                }
+                                            } catch (Exception e) {
+                                                System.out.println("It has not been possible to get user data");
                                             }
-                                        }catch (Exception e) {
-                                            System.out.println("It has not been possible to get user data");
+
+                                            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
+                                            driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
+                                        } catch (TimeoutException e) {
+                                            System.out.println("memberOverlayRedesign g10n not opened. Skipping related data retrieval.");
                                         }
 
-                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
-                                        driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
-                                    } catch (TimeoutException e) {
-                                        System.out.println("memberOverlayRedesign g10n not opened. Skipping related data retrieval.");
-                                    }
+                                        wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ui_bubble_rating"))));
+                                        WebElement ev = reviews.get(i).findElement(By.className("ui_bubble_rating"));
+                                        evaluation = setBubbleEvaluation(ev);
 
-                                    wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ui_bubble_rating"))));
-                                    WebElement ev = reviews.get(i).findElement(By.className("ui_bubble_rating"));
-                                    evaluation = setBubbleEvaluation(ev);
+                                        //System.out.println(evaluation);
+                                        wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ratingDate"))));
+                                        date = reviews.get(i).findElement(By.className("ratingDate")).getText();
+                                        //System.out.println(date);
 
-                                    //System.out.println(evaluation);
-                                    wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("ratingDate"))));
-                                    date = reviews.get(i).findElement(By.className("ratingDate")).getText();
-                                    //System.out.println(date);
+                                        wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("partial_entry"))));
+                                        text = reviews.get(i).findElement(By.className("partial_entry")).getText();
+                                        //System.out.println(text);
 
-                                    wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("partial_entry"))));
-                                    text = reviews.get(i).findElement(By.className("partial_entry")).getText();
-                                    //System.out.println(text);
-
-                                    if(areThereMoreInfo(reviews.get(i))){
-                                        wait.until(ExpectedConditions.visibilityOfAllElements(reviews.get(i).findElements(By.className("recommend-answer"))));
-                                        List<WebElement> firstColumn = reviews.get(i).findElements(By.className("recommend-answer"));
-                                        for(WebElement wl : firstColumn){
-                                            String cat = wl.findElement(By.className("recommend-description")).getText();
-                                            WebElement eval = wl.findElement(By.className("ui_bubble_rating"));
-                                            if(cat.equals("Atmosphere"))
-                                                atmosphere = setBubbleEvaluation(eval);
-                                            else if(cat.equals("Service"))
-                                                service = setBubbleEvaluation(eval);
-                                            else if(cat.equals("Food"))
-                                                food = setBubbleEvaluation(eval);
-                                        }
+                                        if (areThereMoreInfo(reviews.get(i))) {
+                                            wait.until(ExpectedConditions.visibilityOfAllElements(reviews.get(i).findElements(By.className("recommend-answer"))));
+                                            List<WebElement> firstColumn = reviews.get(i).findElements(By.className("recommend-answer"));
+                                            for (WebElement wl : firstColumn) {
+                                                String cat = wl.findElement(By.className("recommend-description")).getText();
+                                                WebElement eval = wl.findElement(By.className("ui_bubble_rating"));
+                                                if (cat.equals("Atmosphere"))
+                                                    atmosphere = setBubbleEvaluation(eval);
+                                                else if (cat.equals("Service"))
+                                                    service = setBubbleEvaluation(eval);
+                                                else if (cat.equals("Food"))
+                                                    food = setBubbleEvaluation(eval);
+                                            }
                                         /*
                                         wait.until(ExpectedConditions.visibilityOfAllElements(reviews.get(i).findElements(By.xpath("//ul[@class='recommend-column']/li"))));
                                         List<WebElement> secondColumn = reviews.get(i).findElements(By.xpath("//ul[@class='recommend-column']/li"));
@@ -276,31 +263,33 @@ public class Main {
                                         }
 
                                          */
+                                        }
+
+                                        Review r = new Review(restCode, memberSince, userInfo, userLevel, contributions, citiesVisited, helpfulVotes, photos, atmosphere, service, food, date, evaluation, text);
+                                        reviewsList.add(r.createsArray());
+
                                     }
 
-                                    Review r = new Review(restCode, memberSince, userInfo, userLevel, contributions, citiesVisited, helpfulVotes, photos, atmosphere, service, food, date, evaluation, text);
-                                    reviewsList.add(r.createsArray());
 
-                                }
-
-
-                                if (existsElement("//a[@class='nav next ui_button primary disabled']"))
-                                    stop = true;
-                                else {
-                                    if (existsElement("//a[@class='nav next ui_button primary']"))
-                                        driver.findElement(By.xpath("//a[@class='nav next ui_button primary']")).click();
-                                    else
+                                    if (existsElement("//a[@class='nav next ui_button primary disabled']"))
                                         stop = true;
-                                }
+                                    else {
+                                        if (existsElement("//a[@class='nav next ui_button primary']"))
+                                            driver.findElement(By.xpath("//a[@class='nav next ui_button primary']")).click();
+                                        else
+                                            stop = true;
+                                    }
 
-                            } while (!stop && count < reviewLimit);
-                            Review.writeToFile(reviewsList);
-                            System.out.println("Restaurant n° " + restaurants + " analyzed. " + reviewsList.size() + " valid reviews saved");
+                                } while (!stop && count < reviewLimit);
+                                Review.writeToFile(reviewsList);
+                                System.out.println("Restaurant n° " + restaurants + " analyzed. " + reviewsList.size() + " valid reviews saved");
 
-
-                        }
-                        else{
-                            System.out.println(restName + " has 0 reviews! Starting another restaurant...");
+                            } else {
+                                System.out.println(restName + " has 0 reviews! Starting another restaurant...");
+                            }
+                        } else {
+                            System.out.println("Page loaded is not a restaurant. Restarting tool and skipping restaurant...");
+                            prepareForExecution(driver, wait, false);
                         }
 
                         try {
@@ -332,6 +321,24 @@ public class Main {
             throw new RuntimeException(e);
         }
         driver.quit();
+    }
+
+    private static void prepareForExecution(WebDriver driver, WebDriverWait wait, boolean firstLoad) throws InterruptedException {
+        driver.get("https://www.tripadvisor.com/");
+
+        System.out.println("Starting execution...");
+
+        if (firstLoad) {
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("onetrust-accept-btn-handler")));
+            driver.findElement(By.id("onetrust-accept-btn-handler")).click();
+        }
+
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//input[@placeholder='Where to?']")));
+        driver.findElement(By.xpath("//input[@placeholder='Where to?']")).sendKeys("Le 147");
+        Thread.sleep(3000);
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']")));
+        List<WebElement> temp=driver.findElements(By.xpath("//a[@class='GzJDZ w z _S _F Wc Wh Q B- _G']"));
+        temp.get(0).click();
     }
 
     private static boolean existsElement(String id) {
