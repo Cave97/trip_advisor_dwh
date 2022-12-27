@@ -182,7 +182,7 @@ public class Main {
                                             try {
                                                 users.get(i).click();
                                             } catch (ElementClickInterceptedException e) {
-                                                System.out.println(e.getMessage());
+                                                System.out.println("It has not been possible to click on user, retrying in 0,5 s...");
                                                 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
                                                 driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
                                                 Thread.sleep(500);
