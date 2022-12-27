@@ -186,7 +186,15 @@ public class Main {
                                     String food = "";
                                     String text="";
 
-                                    users.get(i).click();
+                                    try {
+                                        users.get(i).click();
+                                    } catch (ElementClickInterceptedException e) {
+                                        System.out.println(e.getMessage());
+                                        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='ui_close_x'])[2]")));
+                                        driver.findElement(By.xpath("(//div[@class='ui_close_x'])[2]")).click();
+                                        Thread.sleep(500);
+                                        users.get(i).click();
+                                    }
 
                                     try {
                                         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='memberOverlayRedesign g10n']")));
