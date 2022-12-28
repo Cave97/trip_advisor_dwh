@@ -79,7 +79,7 @@ public class Main {
 
                 FileWriter fileWriter = new FileWriter(csvWrite, true);
                 CSVWriter writer = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_ESCAPE_CHARACTER);
-                String[] data = new String[] {"restCode", "date", "evaluation", "memberSince", "userInfo", "userLevel", "contributions", "citiesVisited", "helpfulVotes", "photos", "atmosphere", "service", "food", "text"};
+                String[] data = new String[] {"restCode", "date", "evaluation", "memberSince", "userId", "userInfo", "userLevel", "contributions", "citiesVisited", "helpfulVotes", "photos", "atmosphere", "service", "food", "title", "text"};
                 writer.writeNext(data);
                 writer.close();
             }
@@ -178,6 +178,12 @@ public class Main {
                                             String service = "";
                                             String food = "";
                                             String text = "";
+                                            String userId;
+                                            String title;
+
+                                            wait.until(ExpectedConditions.visibilityOf(users.get(i).findElement(By.className("avatar"))));
+                                            WebElement tempId = users.get(i).findElement(By.className("avatar"));
+                                            userId = tempId.getAttribute("class").substring(15);
 
                                             try {
                                                 users.get(i).click();
@@ -237,6 +243,9 @@ public class Main {
                                             date = reviews.get(i).findElement(By.className("ratingDate")).getText();
                                             //System.out.println(date);
 
+                                            wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("noQuotes"))));
+                                            title = reviews.get(i).findElement(By.className("noQuotes")).getText();
+
                                             wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("partial_entry"))));
                                             text = reviews.get(i).findElement(By.className("partial_entry")).getText();
                                             //System.out.println(text);
@@ -271,7 +280,7 @@ public class Main {
                                          */
                                             }
 
-                                            Review r = new Review(restCode, memberSince, userInfo, userLevel, contributions, citiesVisited, helpfulVotes, photos, atmosphere, service, food, date, evaluation, text);
+                                            Review r = new Review(restCode, date, evaluation, memberSince, userId, userInfo, userLevel, contributions, citiesVisited, helpfulVotes, photos, atmosphere, service, food, title, text);
                                             reviewsList.add(r.createsArray());
 
                                         }

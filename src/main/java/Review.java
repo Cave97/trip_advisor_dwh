@@ -28,18 +28,20 @@ public class Review {
     private final String date;
     private final String evaluation;
     private final String restCode;
+    private final String userId;
+    private final String title;
 
 
-
-    public Review(String restCode, String memberSince, String userInfo, String userLevel, String contributions, String citiesVisited, String helpfulVotes, String photos, String atmosphere, String service, String food, String date, String evaluation, String text) throws ParseException {
+    public Review(String restCode, String date, String evaluation, String memberSince, String userId, String userInfo, String userLevel, String contributions, String citiesVisited, String helpfulVotes, String photos, String atmosphere, String service, String food, String title, String text) throws ParseException {
         this.restCode = restCode;
         this.memberSince = memberSince;
+        this.userId = userId;
         this.userInfo = userInfo;
         this.userLevel = userLevel;
-        this.contributions = contributions;
-        this.citiesVisited = citiesVisited;
-        this.helpfulVotes = helpfulVotes;
-        this.photos = photos;
+        this.contributions = contributions.replaceAll(",", "");
+        this.citiesVisited = citiesVisited.replaceAll(",", "");
+        this.helpfulVotes = helpfulVotes.replaceAll(",", "");
+        this.photos = photos.replaceAll(",", "");
         this.atmosphere = atmosphere;
         this.service = service;
         this.food = food;
@@ -52,8 +54,11 @@ public class Review {
         }else
             this.date = date;
         this.evaluation = evaluation;
-        String escapedData = text.replaceAll("\n", " ");
-        escapedData = escapedData.replaceAll(";", " ");
+        String escapedTitle = title.replaceAll("\n", "");
+        escapedTitle = escapedTitle.replaceAll(";", ".");
+        this.title = escapedTitle;
+        String escapedData = text.replaceAll("\n", "");
+        escapedData = escapedData.replaceAll(";", ".");
         //byte[] bytes = escapedData.getBytes(StandardCharsets.UTF_8);
         this.text = escapedData;//new String(bytes, StandardCharsets.UTF_8);
     }
@@ -86,7 +91,7 @@ public class Review {
 
 
     public String[] createsArray(){
-        return new String[] {restCode, date, evaluation, memberSince, userInfo, userLevel, contributions, citiesVisited, helpfulVotes, photos, atmosphere, service, food, text};
+        return new String[] {restCode, date, evaluation, memberSince, userId, userInfo, userLevel, contributions, citiesVisited, helpfulVotes, photos, atmosphere, service, food, title, text};
     }
 
     @Override
