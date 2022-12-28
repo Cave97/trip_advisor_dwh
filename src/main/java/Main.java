@@ -183,8 +183,11 @@ public class Main {
 
                                             wait.until(ExpectedConditions.visibilityOf(users.get(i).findElement(By.className("avatar"))));
                                             WebElement tempId = users.get(i).findElement(By.className("avatar"));
-                                            userId = tempId.getAttribute("class").substring(15);
-
+                                            String temp = tempId.getAttribute("class");
+                                            if(temp.length() > 15)
+                                                userId = temp.substring(15);
+                                            else
+                                                userId = "";
                                             try {
                                                 users.get(i).click();
                                             } catch (ElementClickInterceptedException e) {
