@@ -185,7 +185,7 @@ public class Main {
                                             String food = "";
                                             String text = "";
                                             String userId;
-                                            String title;
+                                            String title = "";
 
                                             wait.until(ExpectedConditions.visibilityOf(users.get(i).findElement(By.className("avatar"))));
                                             WebElement tempId = users.get(i).findElement(By.className("avatar"));
@@ -252,8 +252,12 @@ public class Main {
                                             date = reviews.get(i).findElement(By.className("ratingDate")).getText();
                                             //System.out.println(date);
 
-                                            wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("noQuotes"))));
-                                            title = reviews.get(i).findElement(By.className("noQuotes")).getText();
+                                            try {
+                                                wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("noQuotes"))));
+                                                title = reviews.get(i).findElement(By.className("noQuotes")).getText();
+                                            } catch (TimeoutException e) {
+                                                System.out.println("Review's title not present. Leaving blank...");
+                                            }
 
                                             wait.until(ExpectedConditions.visibilityOf(reviews.get(i).findElement(By.className("partial_entry"))));
                                             text = reviews.get(i).findElement(By.className("partial_entry")).getText();
