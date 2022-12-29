@@ -77,8 +77,10 @@ public class Review {
             File csvWrite;
             if(OS.contains("windows"))
                 csvWrite = new File(".\\output\\output.csv");
-            else
+            else if (OS.contains("mac"))
                 csvWrite = new File("./output/output.csv");
+            else
+                csvWrite = new File("/output/output.csv");
 
             FileWriter fileWriter = new FileWriter(csvWrite, true);
             CSVWriter writer = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR);

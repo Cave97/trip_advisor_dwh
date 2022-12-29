@@ -36,11 +36,15 @@ public class Main {
             csvRead = new File(".\\read\\tripadvisor_italian_restaurants_for_reviews_retrieval.csv");
             index = new File(".\\read\\index.txt");
         }
-
-        else{
+        else if (OS.contains("mac")){
             System.setProperty("webdriver.chrome.driver",  "./webdrivers/chromedriver_mac64/chromedriver");
             csvRead = new File("./read/tripadvisor_italian_restaurants_for_reviews_retrieval.csv");
             index = new File("./read/index.txt");
+        }
+        else {
+            System.setProperty("webdriver.chrome.driver",  "/webdrivers/chromedriver_linux64/chromedriver");
+            csvRead = new File("/read/tripadvisor_italian_restaurants_for_reviews_retrieval.csv");
+            index = new File("/read/index.txt");
         }
 
 
@@ -74,8 +78,10 @@ public class Main {
                 File csvWrite;
                 if(OS.contains("windows"))
                     csvWrite = new File(".\\output\\output.csv");
-                else
+                else if (OS.contains("mac"))
                     csvWrite = new File("./output/output.csv");
+                else
+                    csvWrite = new File("/output/output.csv");
 
                 FileWriter fileWriter = new FileWriter(csvWrite, true);
                 CSVWriter writer = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_ESCAPE_CHARACTER);
@@ -323,8 +329,10 @@ public class Main {
                             System.out.println(restName + " in " + restCity + " with code " + restCode + " NOT FOUND!");
                             if (OS.contains("windows"))
                                 driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0 UXKdo']")).sendKeys(Keys.CONTROL + "a");
-                            else
+                            else if (OS.contains("mac"))
                                 driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0 UXKdo']")).sendKeys(Keys.COMMAND + "a");
+                            else
+                                driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0 UXKdo']")).sendKeys(Keys.CONTROL + "a");
                             driver.findElement(By.xpath("//input[@class='qjfqs _G B- z _J Cj R0 UXKdo']")).sendKeys(Keys.DELETE);
                         }
                         thereIsSomeTrouble = false;
